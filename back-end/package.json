@@ -1,0 +1,29 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "API pour le P6 OpenClassroom",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The8blank/P6_OpenClassroom.git"
+  },
+  "author": "Samuel Chojnacki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/The8blank/P6_OpenClassroom/issues"
+  },
+  "homepage": "https://github.com/The8blank/P6_OpenClassroom#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.2",
+    "mongoose-unique-validator": "^3.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
