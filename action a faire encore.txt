@@ -1,0 +1,4 @@
+1. chiffrer les adresses email 
+
+2. crée deux users sur mongodb qui ont accés à la db
+
