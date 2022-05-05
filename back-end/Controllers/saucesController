@@ -67,12 +67,19 @@ exports.updateOne = (req, res, next) => {
   console.log('Sauce update');
 }
 
+
 exports.deleteOne = (req, res, next) => {
-    Sauce.findOne({_id : req.params.id})
+
+    Sauce.findById({_id:req.params.id})
     .then( (sauce) => {
-        if (req.auth.userId !== sauce.userId){
-            res.status(400).json({error: new Error('Unauthorized request!')})
-        }
+      if (!sauce){
+        res.status(400).json({message: "sauce non trouvé"})
+      }
+
+      if (req.auth.userId !== sauce.userId){
+        console.log('faux');
+        res.status(400).json({message : "requete invalide"})
+      }else {
         const filename = sauce.imageUrl.split('/images/')[1]
 
         fs.unlink(`images/${filename}`, () => {
@@ -80,6 +87,6 @@ exports.deleteOne = (req, res, next) => {
               .then(() => res.status(200).json({ message: "Sauce supprimé !"}))
               .catch(error => res.status(400).json({ error }));
           });
+      }
     })
-    
 }
