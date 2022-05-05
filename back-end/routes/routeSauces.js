@@ -8,6 +8,7 @@ const auth = require('../Middlewares/auth')
 router.get('/', ctrl.getAll)
 router.get('/:id', ctrl.getOne)
 router.post('/', auth, multer ,ctrl.addOne)
+router.post('/:id/like', auth, ctrl.likeDislikeOne )
 router.put('/:id', auth, multer, ctrl.updateOne)
 router.delete('/:id', auth, ctrl.deleteOne)
 
