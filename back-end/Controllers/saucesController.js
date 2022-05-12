@@ -99,7 +99,7 @@ exports.deleteOne = (req, res, next) => {
 
       // vérifie que la supression provient du créateur
       if (req.auth.userId !== sauce.userId){
-        console.log('faux');
+        console.log('User id non égal au token');
         res.status(400).json({message : "requete invalide"})
       }else {
         // définit le nom de l'image à suprimmé

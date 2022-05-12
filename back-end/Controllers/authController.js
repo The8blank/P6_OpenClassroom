@@ -9,35 +9,23 @@ const bcrypt = require("bcrypt");
 
 // Logique métier signup 
 exports.signup = (req, res, next) => {
-  // Définit une regex email
-  const emailRegex = new RegExp(
-    "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
-  );
-
-  // Test la regex email 
-  if (!emailRegex.test(req.body.email)) {
-    console.log(`l'utilisateur à entré un email non valide`);
-    res.status(400).json({ message: `l'email n'est pas valide` });
-    res.end();
-  } else {
-    // Si l'email est valide, hash le mot de passe
-    bcrypt.hash(req.body.password, 15).then((hash) => {
-      const user = new User({
-        email: req.body.email,
-        password: hash,
-      });
-
-      // Envoie le nouvel utilisiteur dans la base de donnée
-      user
-        .save()
-        .then(() => {
-          res.status(201).json({ message: "Utilisateur créé !" });
-          console.log("Utilisateur crée dans la base de donnée :");
-          console.log(req.body);
-        })
-        .catch((error) => res.status(400).json({ error }));
+  // Si l'email est valide, hash le mot de passe
+  bcrypt.hash(req.body.password, 15).then((hash) => {
+    const user = new User({
+      email: req.body.email,
+      password: hash,
     });
-  }
+
+    // Envoie le nouvel utilisiteur dans la base de donnée
+    user
+      .save()
+      .then(() => {
+        res.status(201).json({ message: "Utilisateur créé !" });
+        console.log("Utilisateur crée dans la base de donnée :");
+        console.log(req.body);
+      })
+      .catch((error) => res.status(400).json({ error }));
+  });
 };
 
 // Logique métier login
