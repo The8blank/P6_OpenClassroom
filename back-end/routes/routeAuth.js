@@ -7,9 +7,10 @@ const emailValidator = require('../Middlewares/checkEmail')
 const ctrl = require('../Controllers/authController')
 const checkEmail = require('../Middlewares/checkEmail')
 
-
-router.post('/signup',checkEmail,passwordValidator, ctrl.signup)
-router.post('/login',ctrl.login )
+// route inscription
+router.post('/signup', checkEmail, passwordValidator, ctrl.signup)
+// route login
+router.post('/login', ctrl.login )
 
 
 

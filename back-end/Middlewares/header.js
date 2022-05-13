@@ -1,4 +1,5 @@
 exports.header = (req, res, next) => {
+  // header pour autorisé les requetes exterieur 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",

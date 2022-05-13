@@ -1,6 +1,6 @@
 // Importe le model Sauce
 const Sauce = require("../models/SauceModels");
-// Importe fs pour supprimer des fichier en local 
+// Importe fs pour supprimer des fichiers en local 
 const fs = require('fs')
 
 // Logique métier pour récupérer toutes les sauces
@@ -116,6 +116,7 @@ exports.deleteOne = (req, res, next) => {
     })
 }
 
+// Logique métier like : dislike
 exports.likeDislikeOne = (req, res, next) => {
   let like = req.body.like
   let userId = req.body.userId
@@ -123,6 +124,8 @@ exports.likeDislikeOne = (req, res, next) => {
   
   switch (like) {
     case 1 :
+      // si like = 1
+      // ajoute l'user au tableau like et incrémente
         Sauce.updateOne({ _id: sauceId }, { $push: { usersLiked: userId }, $inc: { likes: +1 }})
           .then(() => res.status(200).json({ message: `J'aime` }))
           .catch((error) => res.status(400).json({ error }))
@@ -130,14 +133,19 @@ exports.likeDislikeOne = (req, res, next) => {
       break;
 
     case 0 :
+      // si like = 0
         Sauce.findOne({ _id: sauceId })
            .then((sauce) => {
+             // si il y'a deja l'user dans userliked
             if (sauce.usersLiked.includes(userId)) { 
+              // supprime l'user du tableau like et décrémente
               Sauce.updateOne({ _id: sauceId }, { $pull: { usersLiked: userId }, $inc: { likes: -1 }})
                 .then(() => res.status(200).json({ message: `Neutre` }))
                 .catch((error) => res.status(400).json({ error }))
             }
+            // si il y'a deja l'user dans dislike
             if (sauce.usersDisliked.includes(userId)) { 
+              // supprime l'user du tableau dislike et décrémente
               Sauce.updateOne({ _id: sauceId }, { $pull: { usersDisliked: userId }, $inc: { dislikes: -1 }})
                 .then(() => res.status(200).json({ message: `Neutre` }))
                 .catch((error) => res.status(400).json({ error }))
@@ -147,6 +155,8 @@ exports.likeDislikeOne = (req, res, next) => {
       break;
 
     case -1 :
+      // si like = -1
+      // ajoute l'user au tableau dislike et incrémente
         Sauce.updateOne({ _id: sauceId }, { $push: { usersDisliked: userId }, $inc: { dislikes: +1 }})
           .then(() => { res.status(200).json({ message: `Je n'aime pas` }) })
           .catch((error) => res.status(400).json({ error }))
