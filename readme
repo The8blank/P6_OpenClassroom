@@ -1,0 +1,9 @@
+Projet 6 de la formation Openclassroom.
+
+1. Pour installer le front end, rendez vous dans le dossier front et faite npm install 
+
+2. Ensuite lancer le front avec npm start 
+
+3. Installer le back end en vous rendant dans le dossier back et faite npm instal 
+
+4. Ensuite lancer le back avec npm start 
