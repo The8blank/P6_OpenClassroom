@@ -37,11 +37,11 @@ exports.login = (req, res, next) => {
   User.findOne({email : req.body.email}).then((user) => {
     // Si il y a un user
     if (user) {
+
       // compare le hash du mot de passe à celui entré
       bcrypt.compare(req.body.password, user.password)
-      // S'il est valide renvoie le token et l'userID
-
       .then((valid) => {
+        // S'il est valide renvoie le token et l'userID
         if (valid){
           res.status(200).json({
             userId : user._id,

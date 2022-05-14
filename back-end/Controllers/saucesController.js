@@ -129,12 +129,24 @@ exports.likeDislikeOne = (req, res, next) => {
   
   switch (like) {
     case 1 :
+
       // si like = 1
-      // ajoute l'user au tableau like et incrémente
-        Sauce.updateOne({ _id: sauceId }, { $push: { usersLiked: userId }, $inc: { likes: +1 }})
-          .then(() => res.status(200).json({ message: `J'aime` }))
-          .catch((error) => res.status(400).json({ error }))
-            
+      Sauce.findOne({_id: req.params.id})
+      .then((sauce) => {
+
+        if (sauce.usersLiked.includes(req.auth.userId) || sauce.usersDisliked.includes(req.auth.userId)){
+          res.status(401).json({message : "Vous avez déja réagis à cette sauce"})
+        }
+
+        else {
+          // ajoute l'user au tableau like et incrémente
+          Sauce.updateOne({ _id: sauceId }, { $push: { usersLiked: userId }, $inc: { likes: +1 }})
+            .then(() => res.status(200).json({ message: `J'aime` }))
+            .catch((error) => res.status(400).json({ error }))
+        }
+      })
+      .catch((error) => res.status(400).json({error}))
+
       break;
 
     case 0 :
@@ -161,10 +173,19 @@ exports.likeDislikeOne = (req, res, next) => {
 
     case -1 :
       // si like = -1
-      // ajoute l'user au tableau dislike et incrémente
-        Sauce.updateOne({ _id: sauceId }, { $push: { usersDisliked: userId }, $inc: { dislikes: +1 }})
-          .then(() => { res.status(200).json({ message: `Je n'aime pas` }) })
-          .catch((error) => res.status(400).json({ error }))
+      Sauce.findOne({_id: req.params.id})
+      .then((sauce) => {
+        if (sauce.usersDisliked.includes(req.auth.userId) || sauce.usersLiked.includes(userId)){
+          res.status(401).json({message : "Vous avez déja réagis à cette sauce"})
+        }
+        else {
+          // ajoute l'user au tableau dislike et incrémente
+          Sauce.updateOne({ _id: sauceId }, { $push: { usersDisliked: userId }, $inc: { dislikes: +1 }})
+            .then(() => { res.status(200).json({ message: `Je n'aime pas` }) })
+            .catch((error) => res.status(400).json({ error }))
+        }
+      })
+    
       break;
       
       default:
