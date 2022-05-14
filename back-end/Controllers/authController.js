@@ -7,6 +7,9 @@ const jwt = require("jsonwebtoken");
 // importation du module bcrypt pour hasher le password
 const bcrypt = require("bcrypt");
 
+// importation des variable d'environnement
+require('dotenv').config()
+
 // Logique métier signup 
 exports.signup = (req, res, next) => {
   // Si l'email est valide, hash le mot de passe
@@ -44,7 +47,7 @@ exports.login = (req, res, next) => {
             userId : user._id,
             token: jwt.sign(
               {userId: user._id},
-              'RANDOM_TOKEN_SECRET',
+              process.env.TOKEN,
               {expiresIn: '24h'}
             )
           })

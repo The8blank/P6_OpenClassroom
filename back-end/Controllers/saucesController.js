@@ -14,7 +14,7 @@ exports.getAll = (req, res, next) => {
 exports.getOne = (req, res, next) => {
     Sauce.findById(req.params.id)
     .then((sauce) => res.status(200).json(sauce))
-    .catch((error) => json.status(400).json({error}))
+    .catch((error) => json.status(404).json({error}))
 }
 
 // Logique métier pour ajouté une sauce à la db
@@ -57,6 +57,7 @@ exports.updateOne = (req, res, next) => {
     // vérifie que la sauce est mit à jour par son créateur en comparant son token a l'userId de la sauce
     if (req.auth.userId !== sauce.userId){
       res.status(400).json({error: new Error('Unauthorized request!')})
+      return
     }else{
 
       // si il y a un fichier 
@@ -82,6 +83,7 @@ exports.updateOne = (req, res, next) => {
     }
 
   })
+  .catch((error) => res.status(404).json({ error }));
 
   console.log('Sauce update');
 }
@@ -95,12 +97,14 @@ exports.deleteOne = (req, res, next) => {
       // s'il n'y a pas de sauce 
       if (!sauce){
         res.status(400).json({message: "sauce non trouvé"})
+        return
       }
 
       // vérifie que la supression provient du créateur
       if (req.auth.userId !== sauce.userId){
         console.log('User id non égal au token');
         res.status(400).json({message : "requete invalide"})
+        return
       }else {
         // définit le nom de l'image à suprimmé
         const filename = sauce.imageUrl.split('/images/')[1]
@@ -114,6 +118,7 @@ exports.deleteOne = (req, res, next) => {
           });
       }
     })
+    .catch((error) => res.status(404).json({ error }));
 }
 
 // Logique métier like : dislike
