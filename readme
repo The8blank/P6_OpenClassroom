@@ -6,4 +6,8 @@ Projet 6 de la formation Openclassroom.
 
 3. Installer le back end en vous rendant dans le dossier back et faite npm instal 
 
-4. Ensuite lancer le back avec npm start 
+4. créer votre fichier .env à la racine du dossier back-end
+
+5. le fichier .env doit contenir les varianles TOKEN = "VOTRE SECRET TOKEN" et UIR = "VOTRE URI DE CONNEXION A VOTRE MONGODB"
+
+6. Ensuite lancer le back avec npm start 
